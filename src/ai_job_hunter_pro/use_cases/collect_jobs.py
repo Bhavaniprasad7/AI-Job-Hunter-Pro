@@ -1,6 +1,8 @@
 from __future__ import annotations
 from typing import Iterable, List
 
+from ai_job_hunter_pro.adapters.json_collector import JsonJobCollector  # noqa: F401
+from ai_job_hunter_pro.adapters.rss_collector import RssJobCollector  # noqa: F401
 from ai_job_hunter_pro.config.settings import AppConfig
 from ai_job_hunter_pro.domain.entities import JobPost
 from ai_job_hunter_pro.plugins import PluginRegistry
