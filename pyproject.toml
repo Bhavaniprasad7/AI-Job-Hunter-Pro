@@ -31,6 +31,9 @@ dependencies = [
 [project.scripts]
 ai-job-hunter-pro = "ai_job_hunter_pro.main:app"
 
+[tool.setuptools]
+package-dir = {"" = "src"}
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
