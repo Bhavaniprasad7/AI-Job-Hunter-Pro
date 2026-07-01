@@ -1,0 +1,29 @@
+[
+  {
+    "id": "job-001",
+    "title": "Data Analyst",
+    "description": "Analyze datasets, build dashboards, and support business decisions.",
+    "company": "Acme Corp",
+    "location": "Remote",
+    "posted_date": "2026-06-20",
+    "url": "https://example.com/jobs/1"
+  },
+  {
+    "id": "job-002",
+    "title": "Machine Learning Engineer",
+    "description": "Develop ML models, production pipelines, and collaborate with engineering.",
+    "company": "TechNova",
+    "location": "New York, NY",
+    "posted_date": "2026-06-18",
+    "url": "https://example.com/jobs/2"
+  },
+  {
+    "id": "job-003",
+    "title": "Product Manager",
+    "description": "Lead product discovery, define roadmaps, and work with cross-functional teams.",
+    "company": "Brightworks",
+    "location": "San Francisco, CA",
+    "posted_date": "2026-06-15",
+    "url": "https://example.com/jobs/3"
+  }
+]

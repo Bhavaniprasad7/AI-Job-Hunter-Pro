@@ -1,5 +1,6 @@
 from __future__ import annotations
 import json
+from datetime import datetime
 from pathlib import Path
 from typing import Iterable
 
@@ -21,13 +22,19 @@ class JsonJobCollector(JobSourceCollector):
             data = json.load(stream)
 
         for item in data:
+            posted_date = item.get("posted_date")
+            if isinstance(posted_date, str):
+                try:
+                    posted_date = datetime.fromisoformat(posted_date).date()
+                except ValueError:
+                    posted_date = None
             yield JobPost(
                 id=str(item.get("id", item.get("url", ""))),
                 title=item.get("title", ""),
                 description=item.get("description", ""),
                 company=item.get("company", ""),
                 location=item.get("location", ""),
-                posted_date=item.get("posted_date"),
+                posted_date=posted_date,
                 url=item.get("url"),
                 source="local_json",
                 raw_data=item,

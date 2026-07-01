@@ -7,6 +7,7 @@ import pandas as pd
 
 from ai_job_hunter_pro.config.loader import load_config
 from ai_job_hunter_pro.adapters.sqldb import SqlAlchemyJobRepository, SqlAlchemyMatchRepository
+from ai_job_hunter_pro.use_cases.collect_jobs import JobCollectorService
 from ai_job_hunter_pro.use_cases.filter_jobs import JobFilterService
 
 
@@ -14,6 +15,11 @@ def load_data(config):
     job_repo = SqlAlchemyJobRepository(config.database_url)
     match_repo = SqlAlchemyMatchRepository(config.database_url)
     jobs = job_repo.list_jobs()
+    if not jobs:
+        collector = JobCollectorService(config)
+        jobs = collector.collect()
+        if jobs:
+            job_repo.save_jobs(jobs)
     matches = match_repo.list_matches()
     return jobs, matches
 
