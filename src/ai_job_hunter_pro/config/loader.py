@@ -1,4 +1,5 @@
 from __future__ import annotations
+import os
 from pathlib import Path
 from typing import Any, Dict
 
@@ -8,7 +9,11 @@ from ai_job_hunter_pro.config.settings import AppConfig, JobSourceConfig, Filter
 
 
 def load_config(config_path: Path | str = "config/config.yaml") -> AppConfig:
-    """Load configuration from YAML file and validate with Pydantic."""
+    """Load configuration from YAML file and validate with Pydantic.
+    
+    Environment variables override YAML values:
+    - OPENAI_API_KEY: OpenAI API key for job matching
+    """
     with open(config_path, "r", encoding="utf-8") as stream:
         data = yaml.safe_load(stream) or {}
 
@@ -30,4 +35,11 @@ def load_config(config_path: Path | str = "config/config.yaml") -> AppConfig:
     if "resume_paths" in data and isinstance(data["resume_paths"], list):
         data["resume_paths"] = [Path(p) if isinstance(p, str) else p for p in data["resume_paths"]]
     
-    return AppConfig(**data)
+    # Create AppConfig with validated data
+    config = AppConfig(**data)
+    
+    # Override with environment variables if present
+    if os.getenv("OPENAI_API_KEY"):
+        config.openai_api_key = os.getenv("OPENAI_API_KEY")
+    
+    return config

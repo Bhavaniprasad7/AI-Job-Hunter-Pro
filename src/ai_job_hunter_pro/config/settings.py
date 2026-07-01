@@ -1,9 +1,9 @@
 from __future__ import annotations
+import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field
-from pydantic_settings import BaseSettings
 
 
 
@@ -73,7 +73,7 @@ class ReportConfig(BaseModel):
     html_filename: str = "job_matches.html"
     json_filename: str = "job_matches.json"
 
-class AppConfig(BaseSettings):
+class AppConfig(BaseModel):
     environment: str = "development"
     database_url: str = "sqlite:///ai_job_hunter_pro.db"
     resume_paths: List[Path] = Field(default_factory=lambda: [Path("resumes")])
@@ -81,10 +81,8 @@ class AppConfig(BaseSettings):
     filter: FilterConfig = FilterConfig()
     email: EmailConfig = EmailConfig()
     report: ReportConfig = ReportConfig()
-    openai_api_key: Optional[str] = Field(default=None, env="OPENAI_API_KEY")
+    openai_api_key: Optional[str] = None
     openai_model: str = "gpt-3.5-turbo"
 
     class Config:
-        env_file = ".env"
-        env_prefix = "AI_JOB_HUNTER_PRO_"
         extra = "ignore"
