@@ -2,8 +2,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from pydantic import Field
+from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings
+
 
 
 def _default_fortune_500_companies() -> List[str]:
@@ -40,12 +41,12 @@ def _default_fortune_500_companies() -> List[str]:
         "Nike",
     ]
 
-class JobSourceConfig(BaseSettings):
+class JobSourceConfig(BaseModel):
     name: str
     plugin: str
     settings: Dict[str, Any] = Field(default_factory=dict)
 
-class FilterConfig(BaseSettings):
+class FilterConfig(BaseModel):
     experience_min: float = 0.0
     skills_all: List[str] = Field(default_factory=list)
     skills_any: List[str] = Field(default_factory=list)
@@ -55,7 +56,7 @@ class FilterConfig(BaseSettings):
     fortune_500_only: bool = False
     fortune_500_companies: List[str] = Field(default_factory=_default_fortune_500_companies)
 
-class EmailConfig(BaseSettings):
+class EmailConfig(BaseModel):
     enabled: bool = False
     sender: str = "no-reply@example.com"
     recipients: List[str] = Field(default_factory=list)
@@ -66,7 +67,7 @@ class EmailConfig(BaseSettings):
     use_tls: bool = True
     daily_summary_subject: str = "AI Job Hunter Pro Daily Summary"
 
-class ReportConfig(BaseSettings):
+class ReportConfig(BaseModel):
     output_dir: Path = Path("reports")
     excel_filename: str = "job_matches.xlsx"
     html_filename: str = "job_matches.html"
