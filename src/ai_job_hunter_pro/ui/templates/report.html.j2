@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Job Hunter Pro Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; }
+    th { background: #f5f5f5; text-align: left; }
+  </style>
+</head>
+<body>
+  <h1>AI Job Hunter Pro Report</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Resume</th>
+        <th>Job</th>
+        <th>Company</th>
+        <th>Location</th>
+        <th>Score</th>
+        <th>ATS Score</th>
+        <th>Skills</th>
+        <th>Missing Skills</th>
+        <th>Summary</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for match in matches %}
+      <tr>
+        <td>{{ match.resume_id }}</td>
+        <td>{{ match.job_title }}</td>
+        <td>{{ match.company }}</td>
+        <td>{{ match.location }}</td>
+        <td>{{ match.score }}</td>
+        <td>{{ match.ats_score }}</td>
+        <td>{{ match.skill_matches | join(", ") }}</td>
+        <td>{{ match.missing_skills | join(", ") }}</td>
+        <td>{{ match.summary }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

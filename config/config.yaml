@@ -1,0 +1,45 @@
+environment: development
+
+database_url: sqlite:///ai_job_hunter_pro.db
+
+resume_paths:
+  - resumes/
+
+job_sources:
+  - name: local_json
+    plugin: json
+    settings:
+      path: data/sample_jobs.json
+  - name: rss_feed
+    plugin: rss
+    settings:
+      url: https://www.example.com/jobs.rss
+
+filter:
+  experience_min: 0
+  skills_all: []
+  skills_any: []
+  company: []
+  location: []
+  max_age_days: 30
+
+email:
+  enabled: false
+  sender: "no-reply@example.com"
+  recipients:
+    - "team@example.com"
+  smtp_server: "smtp.example.com"
+  smtp_port: 587
+  username: ""
+  password: ""
+  use_tls: true
+  daily_summary_subject: "AI Job Hunter Pro Daily Summary"
+
+report:
+  output_dir: reports
+  excel_filename: job_matches.xlsx
+  html_filename: job_matches.html
+  json_filename: job_matches.json
+
+openai_api_key: ""
+openai_model: "gpt-3.5-turbo"
