@@ -18,6 +18,11 @@ class PluginRegistry:
         return cls._collectors[key]
 
 
+def load_builtin_collectors() -> None:
+    """Ensure built-in collector plugins are imported and registered."""
+    import ai_job_hunter_pro.adapters  # noqa: F401
+
+
 def register_collector(name: str):
     def decorator(collector: Type[JobSourceCollector]):
         PluginRegistry.register_collector(name, collector)
