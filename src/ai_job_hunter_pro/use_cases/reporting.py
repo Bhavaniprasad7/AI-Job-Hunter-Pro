@@ -14,8 +14,9 @@ class ReportingService:
     def __init__(self, config: ReportConfig):
         self.config = config
         self.config.output_dir.mkdir(parents=True, exist_ok=True)
+        template_path = Path(__file__).resolve().parents[1] / "ui" / "templates"
         self.template_env = Environment(
-            loader=FileSystemLoader(str(Path(__file__).parent / "templates")),
+            loader=FileSystemLoader(str(template_path)),
             autoescape=select_autoescape(["html"]),
         )
 

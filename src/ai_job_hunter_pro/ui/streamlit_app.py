@@ -8,7 +8,6 @@ import pandas as pd
 from ai_job_hunter_pro.config.loader import load_config
 from ai_job_hunter_pro.adapters.sqldb import SqlAlchemyJobRepository, SqlAlchemyMatchRepository
 from ai_job_hunter_pro.use_cases.filter_jobs import JobFilterService
-from ai_job_hunter_pro.use_cases.parse_resumes import ResumeParsingService
 
 
 def load_data(config):

@@ -31,6 +31,9 @@ dependencies = [
 [project.scripts]
 ai-job-hunter-pro = "ai_job_hunter_pro.main:app"
 
+[tool.setuptools.packages.find]
+where = ["src"]
+
 [tool.pytest.ini_options]
 minversion = "7.0"
 addopts = "-q --disable-warnings --strict-markers"
