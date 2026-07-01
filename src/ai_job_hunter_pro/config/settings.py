@@ -47,12 +47,15 @@ class JobSourceConfig(BaseModel):
     settings: Dict[str, Any] = Field(default_factory=dict)
 
 class FilterConfig(BaseModel):
+    role: str = ""
+    keywords: List[str] = Field(default_factory=list)
     experience_min: float = 0.0
     skills_all: List[str] = Field(default_factory=list)
     skills_any: List[str] = Field(default_factory=list)
     company: List[str] = Field(default_factory=list)
     location: List[str] = Field(default_factory=list)
     max_age_days: int = 30
+    last_24_hours: bool = False
     fortune_500_only: bool = False
     fortune_500_companies: List[str] = Field(default_factory=_default_fortune_500_companies)
 

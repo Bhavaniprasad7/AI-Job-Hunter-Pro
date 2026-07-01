@@ -49,7 +49,7 @@ filter:
   company: []
   location: []
   max_age_days: 30
-  fortune_500_only: true
+  fortune_500_only: false
 
 email:
   enabled: false

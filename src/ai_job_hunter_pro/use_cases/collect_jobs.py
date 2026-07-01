@@ -12,11 +12,18 @@ class JobCollectorService:
     def __init__(self, config: AppConfig):
         self.config = config
 
-    def collect(self) -> List[JobPost]:
+    def collect(self) -> tuple[List[JobPost], List[str]]:
         load_builtin_collectors()
         jobs: List[JobPost] = []
+        warnings: List[str] = []
         for source in self.config.job_sources:
             collector_cls = PluginRegistry.get_collector(source.plugin)
             collector = collector_cls(source.settings)
-            jobs.extend(list(collector.collect()))
-        return jobs
+            try:
+                source_jobs = list(collector.collect())
+                jobs.extend(source_jobs)
+            except Exception as exc:
+                warnings.append(
+                    f"Source '{source.name}' ({source.plugin}) failed: {exc}"
+                )
+        return jobs, warnings

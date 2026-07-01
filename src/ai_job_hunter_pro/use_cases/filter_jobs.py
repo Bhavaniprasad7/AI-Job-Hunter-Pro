@@ -15,18 +15,43 @@ class JobFilterService:
         return [job for job in jobs if self._matches(job)]
 
     def _matches(self, job: JobPost) -> bool:
-        if self.config.company and job.company.lower() not in [c.lower() for c in self.config.company]:
-            return False
-        if self.config.location and job.location.lower() not in [l.lower() for l in self.config.location]:
-            return False
+        text = f"{job.title or ''} {job.description or ''} {job.company or ''} {job.location or ''}".lower()
+        if getattr(self.config, "role", ""):
+            role = self.config.role.strip().lower()
+            role_tokens = [token for token in re.split(r"\W+", role) if token]
+            if role_tokens and not all(token in text for token in role_tokens):
+                return False
+
+        if getattr(self.config, "keywords", []):
+            keywords = [keyword.strip().lower() for keyword in self.config.keywords if keyword.strip()]
+            if keywords and not any(keyword in text for keyword in keywords):
+                return False
+
+        if self.config.company and job.company:
+            if job.company.lower() not in [c.lower() for c in self.config.company]:
+                return False
+
+        if self.config.location:
+            if not self._matches_location(job.location, self.config.location):
+                return False
+
+        if self.config.last_24_hours:
+            if not job.posted_date:
+                return False
+            age = date.today() - job.posted_date
+            if age > timedelta(days=1):
+                return False
+
         if self.config.max_age_days and job.posted_date:
             age = date.today() - job.posted_date
             if age > timedelta(days=self.config.max_age_days):
                 return False
+
         if self.config.experience_min is not None:
             required_years = self._extract_required_experience(job)
             if required_years is not None and required_years > self.config.experience_min:
                 return False
+
         if self.config.fortune_500_only:
             if not self._is_fortune_500_company(job.company):
                 return False
@@ -52,6 +77,20 @@ class JobFilterService:
                 return float(match.group(1))
         return None
 
+    def _matches_location(self, job_location: str | None, filters: List[str]) -> bool:
+        if not job_location:
+            return False
+
+        normalized_job_location = re.sub(r"\s+", " ", job_location.lower()).strip()
+        for loc in filters:
+            query = re.sub(r"\s+", " ", loc.lower()).strip()
+            if not query:
+                continue
+            tokens = [token for token in query.split(" ") if token]
+            if any(token in normalized_job_location for token in tokens):
+                return True
+        return False
+
     def _extract_skills(self, job: JobPost) -> List[str]:
         normalized = (job.title + " " + job.description).lower()
         keywords = [
@@ -65,5 +104,6 @@ class JobFilterService:
             "data analysis",
             "nlp",
             "devops",
+            "logic apps",
         ]
         return [keyword for keyword in keywords if keyword in normalized]
