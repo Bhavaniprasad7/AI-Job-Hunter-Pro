@@ -36,7 +36,14 @@ def load_config(config_path: Path | str = "config/config.yaml") -> AppConfig:
         data["resume_paths"] = [Path(p) if isinstance(p, str) else p for p in data["resume_paths"]]
     
     # Create AppConfig with validated data
-    config = AppConfig(**data)
+    try:
+        config = AppConfig(**data)
+    except Exception as e:
+        # Surface validation errors with context to help debug in environments
+        # (Streamlit redacts pydantic errors in the UI; include keys to narrow down)
+        raise RuntimeError(
+            f"Configuration validation failed: {e}\nLoaded config keys: {list(data.keys())}"
+        ) from e
     
     # Override with environment variables if present
     if os.getenv("OPENAI_API_KEY"):

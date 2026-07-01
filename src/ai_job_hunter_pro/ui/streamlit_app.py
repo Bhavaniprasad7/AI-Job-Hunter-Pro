@@ -6,6 +6,8 @@ from typing import List
 import streamlit as st
 import pandas as pd
 
+from types import SimpleNamespace
+
 from ai_job_hunter_pro.config.loader import load_config
 from ai_job_hunter_pro.adapters.sqldb import SqlAlchemyJobRepository, SqlAlchemyMatchRepository
 from ai_job_hunter_pro.use_cases.collect_jobs import JobCollectorService
@@ -14,18 +16,36 @@ from ai_job_hunter_pro.use_cases.filter_jobs import JobFilterService
 
 @st.cache_resource
 def get_config():
-    """Load config from file or environment, with fallback to defaults."""
+    """Load config from file or environment, with fallback to defaults.
+
+    Return a plain SimpleNamespace built from the validated config data so
+    Streamlit caching doesn't pickle pydantic internals across environments.
+    """
     config_path = os.getenv("AI_JOB_HUNTER_CONFIG_PATH", "config/config.yaml")
-    
+
     if not Path(config_path).exists():
         config_path = "config/config.yaml"
-    
+
     config = load_config(config_path)
-    
+
     if os.getenv("OPENAI_API_KEY"):
+        # update the validated model, but expose via the namespace
         config.openai_api_key = os.getenv("OPENAI_API_KEY")
-    
-    return config
+
+    # Convert pydantic model to plain dict (supports v2 `.model_dump()` or v1 `.dict()`)
+    if hasattr(config, "model_dump"):
+        cfg_dict = config.model_dump()
+    else:
+        cfg_dict = config.dict()
+
+    def _to_namespace(obj):
+        if isinstance(obj, dict):
+            return SimpleNamespace(**{k: _to_namespace(v) for k, v in obj.items()})
+        if isinstance(obj, list):
+            return [_to_namespace(v) for v in obj]
+        return obj
+
+    return _to_namespace(cfg_dict)
 
 
 def load_data(config):
