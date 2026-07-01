@@ -8,10 +8,12 @@ from ai_job_hunter_pro.config.settings import AppConfig, JobSourceConfig, Filter
 
 
 def load_config(config_path: Path | str = "config/config.yaml") -> AppConfig:
+    """Load configuration from YAML file and validate with Pydantic."""
     with open(config_path, "r", encoding="utf-8") as stream:
         data = yaml.safe_load(stream) or {}
 
     # Convert nested config dicts to their Pydantic models
+    # This ensures proper validation before passing to AppConfig
     if "job_sources" in data and isinstance(data["job_sources"], list):
         data["job_sources"] = [JobSourceConfig(**source) for source in data["job_sources"]]
     
