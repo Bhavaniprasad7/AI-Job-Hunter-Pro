@@ -27,6 +27,10 @@ class JobFilterService:
             required_years = self._extract_required_experience(job)
             if required_years is not None and required_years > self.config.experience_min:
                 return False
+        if self.config.fortune_500_only:
+            if not self._is_fortune_500_company(job.company):
+                return False
+
         if self.config.skills_all or self.config.skills_any:
             job_skills = set(self._extract_skills(job))
             if self.config.skills_all and not set(self.config.skills_all).issubset(job_skills):
@@ -34,6 +38,11 @@ class JobFilterService:
             if self.config.skills_any and not job_skills.intersection({s.lower() for s in self.config.skills_any}):
                 return False
         return True
+
+    def _is_fortune_500_company(self, company_name: str) -> bool:
+        normalized = company_name.strip().lower()
+        winners = [c.lower() for c in self.config.fortune_500_companies]
+        return any(normalized == company or normalized.endswith(f" {company}") for company in winners)
 
     def _extract_required_experience(self, job: JobPost) -> float | None:
         candidates = [job.title or "", job.description or ""]

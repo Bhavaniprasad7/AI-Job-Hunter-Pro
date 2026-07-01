@@ -49,7 +49,7 @@ def run_all(config_path: Optional[Path] = typer.Option("config/config.yaml", exi
     filter_service = JobFilterService(config.filter)
     matcher = JobMatchingService(config)
     email_sender = init_email_sender(config)
-    summary_service = DailySummaryService(config.email, email_sender)
+    summary_service = DailySummaryService(config.email, email_sender, config.report)
     reporting_service = ReportingService(config.report)
 
     jobs = filter_service.filter(collector.collect())

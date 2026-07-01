@@ -26,7 +26,9 @@ dependencies = [
   "openpyxl>=3.1.0",
   "jinja2>=3.1.0",
   "streamlit>=1.30.0",
-  "feedparser>=6.0.0"
+  "feedparser>=6.0.0",
+  "requests>=2.31.0",
+  "beautifulsoup4>=4.12.0"
 ]
 [project.scripts]
 ai-job-hunter-pro = "ai_job_hunter_pro.main:app"

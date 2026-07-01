@@ -6,22 +6,50 @@ resume_paths:
   - resumes/
 
 job_sources:
-  - name: local_json
-    plugin: json
+  - name: naukri_search
+    plugin: naukri
     settings:
-      path: data/sample_jobs.json
-  - name: rss_feed
-    plugin: rss
+      query: "Azure Integration developer"
+      location: "India"
+      max_pages: 1
+  - name: indeed_search
+    plugin: indeed
     settings:
-      url: https://www.example.com/jobs.rss
+      query: "Azure developer"
+      location: "India"
+      max_pages: 1
+  - name: linkedin_search
+    plugin: linkedin
+    settings:
+      query: "Azure PaaS developer"
+      location: "India"
+      max_pages: 1
+  - name: company_careers
+    plugin: company_page
+    settings:
+      urls:
+        - "https://careers.microsoft.com/us/en/search-results?keywords=azure"
+      selectors:
+        card: "div.job-listing"
+        title: "h2"
+        company: ".company"
+        location: ".location"
+        description: ".description"
 
 filter:
-  experience_min: 0
+  experience_min: 5
   skills_all: []
-  skills_any: []
+  skills_any:
+    - "Azure Logic Apps"
+    - "Azure Service Bus"
+    - "Azure API Management"
+    - "Azure Functions"
+    - "Azure Key Vault"
+    - "Azure Monitor"
   company: []
   location: []
   max_age_days: 30
+  fortune_500_only: true
 
 email:
   enabled: false

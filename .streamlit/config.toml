@@ -1,0 +1,17 @@
+[client]
+showErrorDetails = true
+showWarningOnDirectoryDelete = false
+
+[logger]
+level = "info"
+
+[theme]
+primaryColor = "#FF6B6B"
+backgroundColor = "#F0F2F6"
+secondaryBackgroundColor = "#E8EAEF"
+textColor = "#262730"
+font = "sans serif"
+
+[server]
+port = 8501
+enableXsrfProtection = true

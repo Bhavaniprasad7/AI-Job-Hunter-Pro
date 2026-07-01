@@ -2,3 +2,9 @@
 
 from ai_job_hunter_pro.adapters.json_collector import JsonJobCollector  # noqa: F401
 from ai_job_hunter_pro.adapters.rss_collector import RssJobCollector  # noqa: F401
+from ai_job_hunter_pro.adapters.portal_collectors import (
+    CompanyCareerPageCollector,
+    IndeedJobCollector,
+    LinkedInJobCollector,
+    NaukriJobCollector,
+)  # noqa: F401
