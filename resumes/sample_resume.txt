@@ -1,0 +1,6 @@
+John Doe
+john.doe@example.com
++1 555-123-4567
+
+Experienced data analyst with 5+ years working on Python, SQL, and machine learning.
+Skilled in data visualization, dashboards, and cloud architecture.
