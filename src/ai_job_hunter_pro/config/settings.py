@@ -2,7 +2,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from pydantic import BaseSettings, Field, HttpUrl
+from pydantic import Field
+from pydantic_settings import BaseSettings
 
 class JobSourceConfig(BaseSettings):
     name: str
