@@ -45,5 +45,11 @@ class ConfigProvider(ABC):
 
 class EmailSender(ABC):
     @abstractmethod
-    def send(self, subject: str, body: str, recipients: List[str]) -> None:
+    def send(
+        self,
+        subject: str,
+        body: str,
+        recipients: List[str],
+        attachments: List[Path] | None = None,
+    ) -> None:
         pass

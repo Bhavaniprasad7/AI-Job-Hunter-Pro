@@ -5,6 +5,41 @@ from typing import Any, Dict, List, Optional
 from pydantic import Field
 from pydantic_settings import BaseSettings
 
+
+def _default_fortune_500_companies() -> List[str]:
+    return [
+        "Apple",
+        "Microsoft",
+        "Amazon",
+        "Alphabet",
+        "Meta",
+        "Berkshire Hathaway",
+        "Walmart",
+        "Exxon Mobil",
+        "JPMorgan Chase",
+        "Chevron",
+        "Pfizer",
+        "PepsiCo",
+        "Coca-Cola",
+        "Intel",
+        "IBM",
+        "Cisco",
+        "Oracle",
+        "Salesforce",
+        "Adobe",
+        "Accenture",
+        "Deloitte",
+        "FedEx",
+        "UPS",
+        "Verizon",
+        "AT&T",
+        "Boeing",
+        "Honeywell",
+        "Tesla",
+        "Procter & Gamble",
+        "Nike",
+    ]
+
 class JobSourceConfig(BaseSettings):
     name: str
     plugin: str
@@ -17,6 +52,8 @@ class FilterConfig(BaseSettings):
     company: List[str] = Field(default_factory=list)
     location: List[str] = Field(default_factory=list)
     max_age_days: int = 30
+    fortune_500_only: bool = False
+    fortune_500_companies: List[str] = Field(default_factory=_default_fortune_500_companies)
 
 class EmailConfig(BaseSettings):
     enabled: bool = False

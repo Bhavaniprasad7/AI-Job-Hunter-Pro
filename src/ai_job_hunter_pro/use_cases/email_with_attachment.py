@@ -1,6 +1,5 @@
 from __future__ import annotations
 import mimetypes
-import smtplib
 from email.message import EmailMessage
 from pathlib import Path
 from typing import List
@@ -8,7 +7,7 @@ from typing import List
 from ai_job_hunter_pro.domain.ports import EmailSender
 
 
-class SmtpEmailSender(EmailSender):
+class AttachmentEmailSender(EmailSender):
     def __init__(
         self,
         sender: str,
@@ -25,13 +24,7 @@ class SmtpEmailSender(EmailSender):
         self.password = password
         self.use_tls = use_tls
 
-    def send(
-        self,
-        subject: str,
-        body: str,
-        recipients: List[str],
-        attachments: List[Path] | None = None,
-    ) -> None:
+    def send(self, subject: str, body: str, recipients: List[str], attachments: List[Path] | None = None) -> None:
         message = EmailMessage()
         message["Subject"] = subject
         message["From"] = self.sender
@@ -45,9 +38,7 @@ class SmtpEmailSender(EmailSender):
                 ctype = "application/octet-stream"
             maintype, subtype = ctype.split("/", 1)
             with attachment.open("rb") as file:
-                message.add_attachment(
-                    file.read(), maintype=maintype, subtype=subtype, filename=attachment.name
-                )
+                message.add_attachment(file.read(), maintype=maintype, subtype=subtype, filename=attachment.name)
 
         with smtplib.SMTP(self.smtp_server, self.smtp_port, timeout=30) as server:
             if self.use_tls:

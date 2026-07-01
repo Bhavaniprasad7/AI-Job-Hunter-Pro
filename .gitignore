@@ -15,3 +15,23 @@ venv/
 build/
 dist/
 *.pytest_cache/
+
+# Streamlit Cloud
+.streamlit/secrets.toml
+.streamlit/secrets/
+.streamlit/*.secret
+
+# Reports and outputs
+reports/
+*.xlsx
+*.html
+*.json
+
+# Local data
+data/
+resumes/
+
+# Environment files
+.env
+.env.local
+.env.*.local
